@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController // <--- 关键引用
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cointrack.R
 import com.example.cointrack.adapter.TransactionAdapter
 import com.example.cointrack.databinding.FragmentHomeBinding
 import com.example.cointrack.viewmodel.MainViewModel
@@ -17,7 +19,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    // 获取 ViewModel (注意这里用 activityViewModels，表示和 Activity 共享数据)
     private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -33,22 +34,16 @@ class HomeFragment : Fragment() {
 
         // 1. 初始化 RecyclerView
         val adapter = TransactionAdapter { transaction ->
-            // 点击某一行时的回调（比如点击查看详情），暂时先弹个 Toast
             Toast.makeText(context, "点击了: ${transaction.note}", Toast.LENGTH_SHORT).show()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
 
-        // 2. 观察数据变化 (观察者模式)
-
-        // 2.1 观察列表数据
+        // 2. 观察数据
         viewModel.allTransactions.observe(viewLifecycleOwner) { list ->
-            // 当数据库数据变化时，自动刷新列表
             adapter.submitList(list)
         }
 
-        // 2.2 观察收入和支出，计算结余
-        // 这里我们用两个变量存临时数据，实际开发中可以在 ViewModel 里算好
         var currentIncome = 0.0
         var currentExpense = 0.0
 
@@ -64,10 +59,13 @@ class HomeFragment : Fragment() {
             updateBalance(currentIncome, currentExpense)
         }
 
-        // 3. 点击悬浮按钮
+        // ==========================================
+        // 重点在这里：点击悬浮按钮 (+) 的逻辑
+        // ==========================================
         binding.fabAdd.setOnClickListener {
-            // TODO: 跳转到记账页面
-            Toast.makeText(context, "准备去记账", Toast.LENGTH_SHORT).show()
+            // 执行跳转动作
+            // 注意：R.id.action_homeFragment_to_addTransactionFragment 必须和你 nav_graph.xml 里的 id 一致
+            findNavController().navigate(R.id.action_homeFragment_to_addTransactionFragment)
         }
     }
 
