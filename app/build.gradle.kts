@@ -67,4 +67,6 @@ dependencies {
 
     // 4. MPAndroidChart (图表)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
 }
