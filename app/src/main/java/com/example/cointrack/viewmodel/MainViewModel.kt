@@ -38,4 +38,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun delete(transaction: Transaction) = viewModelScope.launch {
         repository.delete(transaction)
     }
+
+    // 用于存放网络返回的汇率信息
+    private val _exchangeRates = androidx.lifecycle.MutableLiveData<Map<String, Double>>()
+    val exchangeRates: LiveData<Map<String, Double>> = _exchangeRates
+
+    // 获取汇率的方法
+    fun fetchRates() {
+        viewModelScope.launch {
+            try {
+                // 在后台线程发起网络请求
+                val response = com.example.cointrack.data.network.RetrofitClient.api.getRates("CNY")
+                if (response.isSuccessful && response.body() != null) {
+                    // 成功拿到数据，更新 LiveData
+                    _exchangeRates.value = response.body()!!.rates
+                }
+            } catch (e: Exception) {
+                // 网络出错（比如没网），这里可以打印日志或忽略
+                e.printStackTrace()
+            }
+        }
+    }
 }

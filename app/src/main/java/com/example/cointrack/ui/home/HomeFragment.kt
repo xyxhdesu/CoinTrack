@@ -67,6 +67,10 @@ class HomeFragment : Fragment() {
             // 注意：R.id.action_homeFragment_to_addTransactionFragment 必须和你 nav_graph.xml 里的 id 一致
             findNavController().navigate(R.id.action_homeFragment_to_addTransactionFragment)
         }
+        // 汇率按钮点击事件
+        binding.btnRate.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_rateFragment)
+        }
     }
 
     private fun updateBalance(income: Double, expense: Double) {

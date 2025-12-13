@@ -10,9 +10,14 @@
         android:name="com.example.cointrack.ui.home.HomeFragment"
         android:label="首页"
         tools:layout="@layout/fragment_home">
+
         <action
             android:id="@+id/action_homeFragment_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_rateFragment"
+            app:destination="@id/rateFragment" />
     </fragment>
 
     <fragment
@@ -20,4 +25,10 @@
         android:name="com.example.cointrack.ui.add.AddTransactionFragment"
         android:label="记一笔"
         tools:layout="@layout/fragment_add_transaction" />
+
+    <fragment
+        android:id="@+id/rateFragment"
+        android:name="com.example.cointrack.ui.tools.RateFragment"
+        android:label="汇率查询"
+        tools:layout="@layout/fragment_rate" />
 </navigation>
