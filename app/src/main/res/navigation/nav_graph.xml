@@ -18,6 +18,10 @@
         <action
             android:id="@+id/action_homeFragment_to_rateFragment"
             app:destination="@id/rateFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_analysisFragment"
+            app:destination="@id/analysisFragment" />
     </fragment>
 
     <fragment
@@ -31,4 +35,10 @@
         android:name="com.example.cointrack.ui.tools.RateFragment"
         android:label="汇率查询"
         tools:layout="@layout/fragment_rate" />
+
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="com.example.cointrack.ui.analysis.AnalysisFragment"
+        android:label="统计分析"
+        tools:layout="@layout/fragment_analysis" />
 </navigation>

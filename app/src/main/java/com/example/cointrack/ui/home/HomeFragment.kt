@@ -71,6 +71,11 @@ class HomeFragment : Fragment() {
         binding.btnRate.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_rateFragment)
         }
+
+        // 统计按钮点击事件
+        binding.btnAnalysis.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
+        }
     }
 
     private fun updateBalance(income: Double, expense: Double) {
