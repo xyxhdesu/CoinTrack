@@ -12,66 +12,59 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// 👇 注意看这里：现在括号里有两个参数了！
 class TransactionAdapter(
-    // 点击事件回调：当用户点击某一行时触发
-    private val onItemClicked: (Transaction) -> Unit
+    private val onItemClicked: (Transaction) -> Unit,       // 参数1：短按
+    private val onItemLongClicked: (Transaction) -> Unit    // 参数2：长按 (你缺的就是这个)
 ) : ListAdapter<Transaction, TransactionAdapter.TransactionViewHolder>(DiffCallback) {
 
-    // 1. 创建视图 ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
-        val binding = ItemTransactionBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TransactionViewHolder(binding)
     }
 
-    // 2. 绑定数据
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
     }
 
-    // 3. 定义 ViewHolder 类
     inner class TransactionViewHolder(private val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(transaction: Transaction) {
-            // 设置备注，如果没写备注就显示分类名
+            // 1. 设置显示内容
             binding.tvNote.text = if (transaction.note.isEmpty()) transaction.category else transaction.note
-            binding.tvCategory.text = transaction.category.firstOrNull()?.toString() ?: "?" // 取首字做图标
+            binding.tvCategory.text = transaction.category
 
-            // 格式化日期
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             binding.tvDate.text = sdf.format(Date(transaction.date))
 
-            // 设置金额颜色：支出(0)红色，收入(1)绿色
+            // 2. 设置金额颜色
             if (transaction.type == 0) {
                 binding.tvAmount.text = "- ${String.format("%.2f", transaction.amount)}"
                 binding.tvAmount.setTextColor(Color.RED)
             } else {
                 binding.tvAmount.text = "+ ${String.format("%.2f", transaction.amount)}"
-                binding.tvAmount.setTextColor(Color.parseColor("#4CAF50")) // 绿色
+                binding.tvAmount.setTextColor(Color.parseColor("#4CAF50"))
             }
 
-            // 设置点击事件
+            // 3. 绑定短按事件
             binding.root.setOnClickListener {
                 onItemClicked(transaction)
+            }
+
+            // 4. ✅ 绑定长按事件
+            binding.root.setOnLongClickListener {
+                onItemLongClicked(transaction)
+                true // 返回 true 表示"我处理完了"，系统就不会再触发短按了
             }
         }
     }
 
-    // 4. DiffUtil 比较器（用来高效更新列表，不需要全部刷新）
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Transaction>() {
-            override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-                return oldItem == newItem
-            }
+            override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction) = oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction) = oldItem == newItem
         }
     }
 }

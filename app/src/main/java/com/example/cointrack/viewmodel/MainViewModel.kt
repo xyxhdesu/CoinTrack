@@ -39,6 +39,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.delete(transaction)
     }
 
+
     // 用于存放网络返回的汇率信息
     private val _exchangeRates = androidx.lifecycle.MutableLiveData<Map<String, Double>>()
     val exchangeRates: LiveData<Map<String, Double>> = _exchangeRates

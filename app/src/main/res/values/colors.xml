@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="purple_200">#80CBC4</color> <color name="purple_500">#009688</color> <color name="purple_700">#00796B</color> <color name="teal_200">#FFCCBC</color> <color name="teal_700">#FF5722</color> <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-</resources>
+
+    <color name="app_background">#F0F2F5</color> </resources>
