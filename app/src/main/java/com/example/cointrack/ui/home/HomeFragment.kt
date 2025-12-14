@@ -76,11 +76,36 @@ class HomeFragment : Fragment() {
         binding.btnAnalysis.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_analysisFragment)
         }
+
+        binding.btnProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
     }
 
+    // 修改这个方法
     private fun updateBalance(income: Double, expense: Double) {
         val balance = income - expense
         binding.tvTotalBalance.text = String.format("%.2f", balance)
+
+        // === ✅ 新增：超支检查逻辑 ===
+        val prefs = requireContext().getSharedPreferences("CoinTrackPrefs", android.content.Context.MODE_PRIVATE)
+        val budget = prefs.getFloat("budget_limit", 0f) // 获取设定的预算
+
+        if (budget > 0) {
+            if (expense > budget) {
+                // 如果超支：支出显示红色，并弹窗提示
+                binding.tvTotalExpense.setTextColor(android.graphics.Color.RED)
+                // 也可以把"本月结余"这几个字改成警告
+                binding.tvTotalBalance.setTextColor(android.graphics.Color.RED)
+                // 甚至弹个 Toast
+                // Toast.makeText(context, "警告：本月已超支！", Toast.LENGTH_LONG).show()
+            } else {
+                // 没超支：恢复正常颜色
+                binding.tvTotalExpense.setTextColor(android.graphics.Color.parseColor("#F44336")) // 原来的红色
+                binding.tvTotalBalance.setTextColor(android.graphics.Color.BLACK)
+            }
+        }
+        // ============================
     }
 
     override fun onDestroyView() {

@@ -22,7 +22,7 @@
             android:id="@+id/btnRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="💱 查汇率"
+            android:text="💱 汇率"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="#6200EE"/>
 
@@ -35,9 +35,21 @@
             android:id="@+id/btnAnalysis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📊 看统计"
+            android:text="📊 统计"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="#6200EE"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚙️ 设置"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="#666666"/>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
