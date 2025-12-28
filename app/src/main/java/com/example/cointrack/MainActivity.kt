@@ -19,4 +19,11 @@ class MainActivity : AppCompatActivity() {
         // 3. 设置内容视图
         setContentView(binding.root)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // App 关闭时停止音乐
+        MusicHelper.stop()
+    }
+
 }

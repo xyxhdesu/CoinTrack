@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cointrack.MusicHelper // 👈 如果这行爆红，请按 Alt+Enter 导入
 import com.example.cointrack.R
 import com.example.cointrack.adapter.TransactionAdapter
 import com.example.cointrack.data.Transaction
@@ -104,6 +105,11 @@ class HomeFragment : Fragment() {
         binding.btnProfile.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
+
+        // (5) ✅ 新增：音乐按钮
+        binding.btnMusic.setOnClickListener {
+            showMusicDialog()
+        }
     }
 
     // ==========================================
@@ -141,6 +147,34 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "已删除", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("取消", null)
+            .show()
+    }
+
+    // ✅ 新增：显示音乐控制弹窗
+    private fun showMusicDialog() {
+        val isPlaying = MusicHelper.isPlaying()
+        val playText = if (isPlaying) "⏸️ 暂停" else "▶️ 播放"
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("🎵 音乐台")
+            .setMessage("点击按钮控制背景音乐：")
+            .setPositiveButton(playText) { _, _ ->
+                if (isPlaying) {
+                    MusicHelper.pause()
+                    Toast.makeText(context, "已暂停", Toast.LENGTH_SHORT).show()
+                } else {
+                    MusicHelper.play(requireContext())
+                    Toast.makeText(context, "开始播放", Toast.LENGTH_SHORT).show()
+                }
+                // 简单地重新调用自己来刷新按钮文字状态
+                // (更高级的做法是用自定义 View，但为了省事这样足够了)
+                // showMusicDialog()
+            }
+            .setNeutralButton("⏭️ 下一首") { _, _ ->
+                MusicHelper.next(requireContext())
+                Toast.makeText(context, "已切换下一首", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("关闭", null)
             .show()
     }
 

@@ -49,6 +49,20 @@
             android:text="⚙️ 设置"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="#666666"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/btnMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🎵"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:textColor="#E91E63"/>
+
+
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
