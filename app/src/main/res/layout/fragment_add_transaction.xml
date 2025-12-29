@@ -45,6 +45,9 @@
             android:layout_marginTop="24dp"
             android:hint="金额"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="custom"
+            app:endIconDrawable="@android:drawable/ic_menu_camera"
+            app:endIconContentDescription="拍照识别"
             app:layout_constraintTop_toBottomOf="@id/toggleGroup">
 
             <com.google.android.material.textfield.TextInputEditText
